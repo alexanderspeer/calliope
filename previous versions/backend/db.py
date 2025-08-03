@@ -4,25 +4,16 @@ from pathlib import Path
 from sqlalchemy import create_engine, func, or_
 from sqlalchemy.orm import sessionmaker, Session
 from sqlalchemy.exc import IntegrityError
-from backend.models import Base, Word, Config
-from backend.schemas import WordCreate, DatabaseFilter, FlashcardFilter
+from models import Base, Word, Config
+from schemas import WordCreate, DatabaseFilter, FlashcardFilter
 from typing import List, Optional, Dict
 from datetime import datetime, timedelta
 import random
 
 
 # Database setup
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./calliope.db")
-
-# Handle SQLite vs PostgreSQL connection args
-if "sqlite" in DATABASE_URL:
-    # SQLite connection args
-    connect_args = {"check_same_thread": False}
-else:
-    # PostgreSQL connection args (no special args needed)
-    connect_args = {}
-
-engine = create_engine(DATABASE_URL, connect_args=connect_args)
+DATABASE_URL = "sqlite:///./calliope.db"
+engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
@@ -49,7 +40,7 @@ def init_database():
         word_count = db.query(Word).count()
         if word_count == 0:
             # Load starting words
-            starting_words_path = Path("starting_words.json")
+            starting_words_path = Path("../starting_words.json")
             if starting_words_path.exists():
                 with open(starting_words_path, 'r', encoding='utf-8') as f:
                     words_data = json.load(f)
