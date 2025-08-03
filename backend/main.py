@@ -27,8 +27,8 @@ from backend.utils import clean_word, validate_word_input, sanitize_text_input, 
 # Initialize FastAPI app
 app = FastAPI(
     title="Calliope Vocabulary App",
-    description="Advanced vocabulary learning and enhancement tool",
-    version="1.0.0"
+    description="Advanced vocabulary learning and enhancement tool with PostgreSQL",
+    version="1.0.1"
 )
 
 # Add CORS middleware
