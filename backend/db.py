@@ -14,6 +14,10 @@ import random
 # Database setup
 DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./calliope.db")
 
+# Fix Heroku PostgreSQL URL format (postgres:// -> postgresql://)
+if DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+
 # Handle SQLite vs PostgreSQL connection args
 if "sqlite" in DATABASE_URL:
     # SQLite connection args
