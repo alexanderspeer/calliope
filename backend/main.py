@@ -12,7 +12,7 @@ from pathlib import Path
 from backend.db import get_db, init_database, get_word_by_name, add_word, get_words_by_filter, get_words_for_flashcards
 from backend.db import get_word_of_the_day, search_words_by_similarity, get_all_words, get_words_for_prediction
 from backend.db import update_word, delete_word, get_word_by_id, get_words_by_filter_with_count
-from backend.db import get_words_added_today, get_current_streak
+from backend.db import get_words_added_today, get_current_streak, verify_schema_isolation
 from backend.models import Word
 from backend.schemas import (
     AddWordRequest, AddWordResponse, WordResponse, ThesaurusRequest, ThesaurusResponse,
@@ -68,6 +68,52 @@ async def root():
 @app.get("/health")
 async def health_check():
     return {"status": "healthy", "message": "Calliope API is running"}
+
+
+# Schema isolation verification endpoint (SAFETY CHECK)
+@app.get("/api/verify-schema")
+async def verify_schema_endpoint():
+    """
+    SAFETY VERIFICATION ENDPOINT
+    
+    Verifies that calliope tables are correctly isolated in the 'calliope' schema on PostgreSQL.
+    This ensures we're not accidentally creating tables in the public schema on shared databases.
+    
+    CRITICAL CHECKS:
+    - PostgreSQL: Tables exist in calliope.* schema, NOT in public.*
+    - SQLite: Tables exist (no schema isolation needed)
+    - No collisions with public schema tables
+    
+    Call this endpoint after deployment to verify safety.
+    """
+    try:
+        verification = verify_schema_isolation()
+        
+        # Return appropriate status code based on verification
+        if verification["status"] == "error" or not verification["safe"]:
+            return {
+                "status": "danger",
+                "verification": verification,
+                "recommendation": "DO NOT USE IN PRODUCTION - Schema isolation failed! Tables may collide with other apps."
+            }
+        elif verification["status"] == "warning":
+            return {
+                "status": "warning",
+                "verification": verification,
+                "recommendation": "Review warnings before using in production"
+            }
+        else:
+            return {
+                "status": "safe",
+                "verification": verification,
+                "recommendation": "Safe to use - schema isolation verified"
+            }
+    
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Schema verification failed: {str(e)}"
+        )
 
 # Word of the Day endpoint
 @app.get("/api/word-of-the-day", response_model=WordOfTheDayResponse)

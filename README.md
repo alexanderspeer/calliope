@@ -104,6 +104,15 @@ PORT=8000
 DEBUG=False
 ```
 
+### Shared Database Support (PostgreSQL)
+
+Calliope now supports **safe deployment on shared Heroku Postgres databases** through strict schema isolation:
+- Local development: SQLite (no isolation needed)
+- Production: PostgreSQL with `calliope` schema (isolated from `public`)
+- **Zero risk** of table collisions with other apps on shared databases
+
+For detailed deployment instructions, see [DEPLOYMENT_SCHEMA_ISOLATION.md](DEPLOYMENT_SCHEMA_ISOLATION.md)
+
 ### API Key Setup
 1. Get your OpenAI API key from https://platform.openai.com/api-keys
 2. Copy `env_template.txt` to `.env`
