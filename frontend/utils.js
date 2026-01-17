@@ -71,6 +71,24 @@ export function getSentimentIcon(sentiment) {
     return icons[sentiment] || '';
 }
 
+export function getPOSIcon(pos) {
+    const posLower = (pos || 'unknown').toLowerCase();
+    const icons = {
+        noun: '<span class="pos-icon pos-noun"></span>',
+        verb: '<span class="pos-icon pos-verb"></span>',
+        adjective: '<span class="pos-icon pos-adjective"></span>',
+        adverb: '<span class="pos-icon pos-adverb"></span>',
+        pronoun: '<span class="pos-icon pos-pronoun"></span>',
+        preposition: '<span class="pos-icon pos-preposition"></span>',
+        conjunction: '<span class="pos-icon pos-conjunction"></span>',
+        interjection: '<span class="pos-icon pos-interjection"></span>',
+        determiner: '<span class="pos-icon pos-determiner"></span>',
+        article: '<span class="pos-icon pos-article"></span>',
+        unknown: '<span class="pos-icon pos-unknown"></span>'
+    };
+    return icons[posLower] || icons.unknown;
+}
+
 export function formatWordCard(word) {
     return `
         <div class="word-card rarity-${word.rarity}">

@@ -21,6 +21,12 @@
         <!-- Help Button -->
         <button id="help-btn" class="help-button" onclick="openHelpModal()" title="Help & Guide">?</button>
         
+        <!-- Color Picker Button -->
+        <button id="color-btn" class="color-button" onclick="openColorModal()" title="Change Theme Color">🎨</button>
+        
+        <!-- Signature Button -->
+        <button id="signature-btn" class="signature-button" onclick="openSignatureModal()" title="Add Signature">✍️</button>
+        
         <header class="header">
             <h1>Calliope</h1>
             <p>Vocabulary Learning Platform</p>
@@ -226,6 +232,88 @@
 
                     <div class="help-footer">
                         </strong> inspired by a spice worm.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Signature Modal -->
+    <div id="signature-modal" class="modal-overlay signature-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add Signature</h2>
+            </div>
+            <div class="modal-body">
+                <div class="signature-form-content">
+                    <div class="form-group">
+                        <label for="signature-name">Your Name</label>
+                        <input type="text" id="signature-name" placeholder="Enter your name..." maxlength="50">
+                    </div>
+                    <div class="form-group">
+                        <label for="signature-font">Font</label>
+                        <select id="signature-font">
+                            <option value="Inter, sans-serif">Inter (Default)</option>
+                            <option value="'Courier New', monospace">Courier New</option>
+                            <option value="Georgia, serif">Georgia</option>
+                            <option value="'Times New Roman', serif">Times New Roman</option>
+                            <option value="Arial, sans-serif">Arial</option>
+                            <option value="'Comic Sans MS', cursive">Comic Sans MS</option>
+                            <option value="'Brush Script MT', cursive">Brush Script MT</option>
+                            <option value="'Trebuchet MS', sans-serif">Trebuchet MS</option>
+                            <option value="Verdana, sans-serif">Verdana</option>
+                            <option value="'Palatino Linotype', serif">Palatino Linotype</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="signature-color">Color</label>
+                        <div class="signature-color-container">
+                            <input type="color" id="signature-color" value="#2F1B14">
+                            <span id="signature-color-value">#2F1B14</span>
+                        </div>
+                    </div>
+                    <div class="signature-preview">
+                        <p>Preview:</p>
+                        <div id="signature-preview-text" style="font-family: Inter, sans-serif; font-size: 1.5rem; color: #2F1B14; padding: 1rem; background: rgba(139, 69, 19, 0.05); border-radius: 8px; margin-top: 0.5rem;"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="add-signature-btn" class="save-btn">Add Signature</button>
+                        <button id="update-signature-btn" class="save-btn" style="display: none;">Update Signature</button>
+                        <button id="delete-signature-btn" class="save-btn" style="background: linear-gradient(135deg, #dc3545 0%, #c82333 100%); display: none;">Delete Signature</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Color Picker Modal -->
+    <div id="color-modal" class="modal-overlay color-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Choose Theme Color</h2>
+            </div>
+            <div class="modal-body">
+                <div class="color-picker-content">
+                    <div class="color-presets">
+                        <h3>Standard Colors</h3>
+                        <div class="color-grid">
+                            <button class="color-preset" data-color="#8B4513" style="background: linear-gradient(135deg, #8B4513 0%, #A0522D 25%, #CD853F 50%, #DEB887 75%, #F5DEB3 100%);" title="Brown">Brown</button>
+                            <button class="color-preset" data-color="#2196F3" style="background: linear-gradient(135deg, #1976D2 0%, #2196F3 25%, #42A5F5 50%, #64B5F6 75%, #90CAF9 100%);" title="Blue">Blue</button>
+                            <button class="color-preset" data-color="#4CAF50" style="background: linear-gradient(135deg, #388E3C 0%, #4CAF50 25%, #66BB6A 50%, #81C784 75%, #A5D6A7 100%);" title="Green">Green</button>
+                            <button class="color-preset" data-color="#9C27B0" style="background: linear-gradient(135deg, #7B1FA2 0%, #9C27B0 25%, #BA68C8 50%, #CE93D8 75%, #E1BEE7 100%);" title="Purple">Purple</button>
+                            <button class="color-preset" data-color="#F44336" style="background: linear-gradient(135deg, #D32F2F 0%, #F44336 25%, #E57373 50%, #EF5350 75%, #FFCDD2 100%);" title="Red">Red</button>
+                            <button class="color-preset" data-color="#FF9800" style="background: linear-gradient(135deg, #F57C00 0%, #FF9800 25%, #FFB74D 50%, #FFCC02 75%, #FFF9C4 100%);" title="Orange">Orange</button>
+                            <button class="color-preset" data-color="#00BCD4" style="background: linear-gradient(135deg, #0097A7 0%, #00BCD4 25%, #26C6DA 50%, #4DD0E1 75%, #B2EBF2 100%);" title="Cyan">Cyan</button>
+                            <button class="color-preset" data-color="#607D8B" style="background: linear-gradient(135deg, #455A64 0%, #607D8B 25%, #78909C 50%, #90A4AE 75%, #CFD8DC 100%);" title="Blue Grey">Blue Grey</button>
+                        </div>
+                    </div>
+                    <div class="color-custom">
+                        <h3>Custom Color</h3>
+                        <div class="custom-color-container">
+                            <input type="color" id="custom-color-input" value="#8B4513">
+                            <label for="custom-color-input">Select a custom color</label>
+                        </div>
+                        <button id="apply-custom-color" class="apply-custom-btn">Apply Custom Color</button>
                     </div>
                 </div>
             </div>

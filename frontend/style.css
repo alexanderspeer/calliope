@@ -21,6 +21,7 @@ body {
     display: none;
     min-height: 100vh;
     padding: 2rem;
+    position: relative;
 }
 
 .dashboard.active {
@@ -51,13 +52,133 @@ body {
 }
 
 .help-button:hover {
-    transform: translateY(-2px) scale(1.05);
-    box-shadow: 0 8px 25px rgba(139, 69, 19, 0.4);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(139, 69, 19, 0.3);
     background: linear-gradient(135deg, #A0522D 0%, #CD853F 100%);
 }
 
 .help-button:active {
-    transform: translateY(0) scale(1);
+    transform: translateY(0);
+}
+
+/* ===== COLOR BUTTON ===== */
+.color-button {
+    position: fixed;
+    top: 5.5rem;
+    left: 2rem;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #8B4513 0%, #A0522D 100%);
+    color: white;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(139, 69, 19, 0.3);
+    transition: all 0.3s ease;
+    z-index: 1000;
+    padding: 0;
+}
+
+.color-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(139, 69, 19, 0.3);
+    background: linear-gradient(135deg, #A0522D 0%, #CD853F 100%);
+}
+
+.color-button:active {
+    transform: translateY(0);
+}
+
+/* ===== SIGNATURE BUTTON ===== */
+.signature-button {
+    position: fixed;
+    top: 9rem;
+    left: 2rem;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #8B4513 0%, #A0522D 100%);
+    color: white;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(139, 69, 19, 0.3);
+    transition: all 0.3s ease;
+    z-index: 1000;
+    padding: 0;
+}
+
+.signature-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(139, 69, 19, 0.3);
+    background: linear-gradient(135deg, #A0522D 0%, #CD853F 100%);
+}
+
+.signature-button:active {
+    transform: translateY(0);
+}
+
+/* ===== SIGNATURE ELEMENTS ===== */
+.signature-element {
+    position: absolute;
+    font-size: 1.5rem;
+    color: rgba(47, 27, 20, 0.7);
+    font-weight: 500;
+    pointer-events: auto;
+    user-select: none;
+    transition: all 0.2s ease;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    touch-action: none;
+}
+
+.signature-element:hover {
+    opacity: 0.9;
+    transform: scale(1.05);
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 2px 8px rgba(139, 69, 19, 0.2);
+}
+
+.signature-element:active {
+    cursor: grabbing !important;
+}
+
+/* New signature glow animation */
+.signature-element.signature-new {
+    animation: signatureGlow 1s ease-out;
+}
+
+@keyframes signatureGlow {
+    0% {
+        transform: scale(1.2);
+        opacity: 0.8;
+        box-shadow: 0 0 20px rgba(139, 69, 19, 0.8),
+                    0 0 40px rgba(139, 69, 19, 0.6),
+                    0 0 60px rgba(139, 69, 19, 0.4);
+        filter: brightness(1.5);
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 0.9;
+        box-shadow: 0 0 15px rgba(139, 69, 19, 0.6),
+                    0 0 30px rgba(139, 69, 19, 0.4),
+                    0 0 45px rgba(139, 69, 19, 0.2);
+        filter: brightness(1.3);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0.7;
+        box-shadow: none;
+        filter: brightness(1);
+    }
 }
 
 /* ===== HEADER ===== */
@@ -549,39 +670,52 @@ button:active {
     justify-content: space-between;
     align-items: center;
     margin: 0 0 2rem 0;
-    padding: 1rem;
+    padding: 10px;
     background: linear-gradient(135deg, #F5F5DC 0%, #FAF0E6 100%);
     border: 2px solid #8B4513;
     border-radius: 15px;
     box-shadow: 0 4px 12px rgba(139, 69, 19, 0.2);
+    height: 61px;
+    box-sizing: border-box;
 }
 
 .pagination-controls {
     display: flex;
     align-items: center;
     gap: 1rem;
+    height: 37px;
 }
 
 .pagination-settings {
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    height: 37px;
 }
 
 .pagination-settings label {
     font-weight: 600;
     color: #2F1B14;
-    font-size: 0.9rem;
+    font-size: 1rem;
+    height: 37px;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
 }
 
 .pagination-settings select {
-    padding: 0.5rem;
+    padding: 0 0.75rem;
     border: 2px solid #8B4513;
     border-radius: 8px;
     background: white;
     color: #2F1B14;
-    font-size: 0.9rem;
+    font-size: 1rem;
+    height: 37px;
+    line-height: 35px;
     transition: all 0.3s ease;
+    box-sizing: border-box;
+    vertical-align: top;
+    margin: 0;
 }
 
 .pagination-settings select:focus {
@@ -598,6 +732,21 @@ button:active {
     background: rgba(139, 69, 19, 0.1);
     border-radius: 8px;
     border: 1px solid #8B4513;
+    height: 37px;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+#prev-btn,
+#next-btn {
+    height: 37px;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
 }
 
 /* ===== WORD CARDS ===== */
@@ -714,6 +863,19 @@ button:active {
     margin-top: auto;
 }
 
+.word-pos-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-transform: lowercase;
+    color: #2F1B14;
+    line-height: 1;
+    margin: 0;
+    padding: 0;
+}
+
 /* Word menu styles */
 .word-menu {
     position: relative;
@@ -743,16 +905,19 @@ button:active {
     position: absolute;
     top: 100%;
     right: 0;
+    margin-top: 0.5rem;
     background: linear-gradient(135deg, #F5F5DC 0%, #FAF0E6 100%);
     border: 2px solid #8B4513;
     border-radius: 12px;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-    min-width: 120px;
+    min-width: 140px;
+    padding: 0.5rem;
     z-index: 1000;
     opacity: 0;
     visibility: hidden;
     transform: translateY(-10px);
     transition: all 0.3s ease;
+    overflow: hidden;
 }
 
 .menu-dropdown.active {
@@ -764,28 +929,28 @@ button:active {
 .menu-item {
     display: block;
     width: 100%;
-    padding: 12px 16px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.25rem;
     border: none;
     background: none;
     text-align: left;
     cursor: pointer;
     transition: all 0.2s ease;
-    font-size: 14px;
+    font-size: 0.95rem;
     font-weight: 500;
     color: #2F1B14;
+    border-radius: 8px;
+}
+
+.menu-item:last-child {
+    margin-bottom: 0;
 }
 
 .menu-item:hover {
-    background: rgba(139, 69, 19, 0.1);
-    color: #8B4513;
+    transform: scale(1.02);
 }
 
 .menu-item.delete {
-    color: #dc3545;
-}
-
-.menu-item.delete:hover {
-    background: rgba(220, 53, 69, 0.1);
     color: #dc3545;
 }
 
@@ -796,12 +961,14 @@ button:active {
     border: 2px solid #8B4513;
     border-radius: 12px;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-    min-width: 120px;
+    min-width: 140px;
+    padding: 0.5rem;
     z-index: 10000;
     opacity: 0;
     visibility: hidden;
     transform: translateY(-10px);
     transition: all 0.3s ease;
+    overflow: hidden;
 }
 
 .context-menu.active {
@@ -813,28 +980,28 @@ button:active {
 .context-menu-item {
     display: block;
     width: 100%;
-    padding: 12px 16px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.25rem;
     border: none;
     background: none;
     text-align: left;
     cursor: pointer;
     transition: all 0.2s ease;
-    font-size: 14px;
+    font-size: 0.95rem;
     font-weight: 500;
     color: #2F1B14;
+    border-radius: 8px;
+}
+
+.context-menu-item:last-child {
+    margin-bottom: 0;
 }
 
 .context-menu-item:hover {
-    background: rgba(139, 69, 19, 0.1);
-    color: #8B4513;
+    transform: scale(1.02);
 }
 
 .context-menu-item.delete {
-    color: #dc3545;
-}
-
-.context-menu-item.delete:hover {
-    background: rgba(220, 53, 69, 0.1);
     color: #dc3545;
 }
 
@@ -1413,6 +1580,11 @@ button:active {
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    line-height: 1;
+    margin: 0;
+    padding: 0;
 }
 
 /* ===== GRIDS ===== */
@@ -1594,6 +1766,23 @@ button:active {
 .sentiment-negative::before { content: "-"; color: #f44336; font-weight: bold; }
 .sentiment-neutral::before { content: "○"; color: #9E9E9E; font-weight: bold; }
 .sentiment-formal::before { content: "◊"; color: #2196F3; font-weight: bold; }
+
+/* ===== POS ICONS ===== */
+.pos-icon {
+    display: inline-block;
+}
+
+.pos-noun::before { content: "•"; color: #8B4513; font-weight: bold; font-size: 0.8rem; }
+.pos-verb::before { content: "•"; color: #2196F3; font-weight: bold; font-size: 0.8rem; }
+.pos-adjective::before { content: "•"; color: #4CAF50; font-weight: bold; font-size: 0.8rem; }
+.pos-adverb::before { content: "•"; color: #FF9800; font-weight: bold; font-size: 0.8rem; }
+.pos-pronoun::before { content: "•"; color: #9C27B0; font-weight: bold; font-size: 0.8rem; }
+.pos-preposition::before { content: "•"; color: #F44336; font-weight: bold; font-size: 0.8rem; }
+.pos-conjunction::before { content: "•"; color: #607D8B; font-weight: bold; font-size: 0.8rem; }
+.pos-interjection::before { content: "•"; color: #E91E63; font-weight: bold; font-size: 0.8rem; }
+.pos-determiner::before { content: "•"; color: #00BCD4; font-weight: bold; font-size: 0.8rem; }
+.pos-article::before { content: "•"; color: #795548; font-weight: bold; font-size: 0.8rem; }
+.pos-unknown::before { content: "•"; color: #9E9E9E; font-weight: bold; font-size: 0.8rem; }
 
 /* ===== SPELL SUGGESTIONS ===== */
 .spell-suggestions-container {
@@ -2264,7 +2453,6 @@ button:active {
     padding: 1.5rem;
     background: linear-gradient(135deg, rgba(139, 69, 19, 0.1) 0%, rgba(160, 82, 45, 0.1) 100%);
     border-radius: 15px;
-    border-left: 4px solid #8B4513;
 }
 
 .help-intro p {
@@ -2366,7 +2554,6 @@ button:active {
     padding: 1.5rem;
     background: linear-gradient(135deg, rgba(76, 175, 80, 0.1) 0%, rgba(139, 195, 74, 0.1) 100%);
     border-radius: 15px;
-    border-left: 4px solid #4CAF50;
     text-align: center;
 }
 
@@ -2405,5 +2592,299 @@ button:active {
     .help-navigation,
     .help-footer {
         padding: 1rem;
+    }
+}
+
+/* ===== SIGNATURE MODAL STYLES ===== */
+.signature-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    backdrop-filter: blur(5px);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.signature-modal.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.signature-modal .modal-content {
+    background: linear-gradient(135deg, #F5F5DC 0%, #FAF0E6 100%);
+    border: 2px solid #8B4513;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+}
+
+.signature-modal.active .modal-content {
+    transform: scale(1);
+}
+
+.signature-form-content {
+    color: #2F1B14;
+}
+
+.signature-preview {
+    margin: 1.5rem 0;
+}
+
+.signature-preview p {
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #8B4513;
+}
+
+#signature-preview-text {
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.signature-color-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.signature-color-container input[type="color"] {
+    width: 60px;
+    height: 40px;
+    border: 2px solid #8B4513;
+    border-radius: 8px;
+    cursor: pointer;
+    padding: 0;
+    background: none;
+}
+
+.signature-color-container input[type="color"]::-webkit-color-swatch-wrapper {
+    padding: 0;
+    border-radius: 6px;
+}
+
+.signature-color-container input[type="color"]::-webkit-color-swatch {
+    border: none;
+    border-radius: 6px;
+}
+
+#signature-color-value {
+    font-weight: 600;
+    color: #2F1B14;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+}
+
+#delete-signature-btn {
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%) !important;
+    color: white !important;
+}
+
+#delete-signature-btn:hover {
+    background: linear-gradient(135deg, #c82333 0%, #bd2130 100%) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(220, 53, 69, 0.4);
+}
+
+.signature-modal .modal-footer {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* ===== COLOR PICKER MODAL STYLES ===== */
+.color-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    backdrop-filter: blur(5px);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.color-modal.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.color-modal .modal-content {
+    background: linear-gradient(135deg, #F5F5DC 0%, #FAF0E6 100%);
+    border: 2px solid #8B4513;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+}
+
+.color-modal.active .modal-content {
+    transform: scale(1);
+}
+
+.color-picker-content {
+    color: #2F1B14;
+}
+
+.color-picker-content h3 {
+    color: #8B4513;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.color-presets {
+    margin-bottom: 2rem;
+}
+
+.color-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.color-preset {
+    aspect-ratio: 1;
+    border: 3px solid #8B4513;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(139, 69, 19, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-weight: 600;
+    color: white;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.color-preset:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 8px 20px rgba(139, 69, 19, 0.4);
+    border-color: #A0522D;
+}
+
+.color-preset:active {
+    transform: translateY(-2px) scale(1.02);
+}
+
+.color-custom {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 2px solid rgba(139, 69, 19, 0.2);
+}
+
+.custom-color-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.custom-color-container input[type="color"] {
+    width: 80px;
+    height: 80px;
+    border: 3px solid #8B4513;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0;
+    background: none;
+}
+
+.custom-color-container input[type="color"]::-webkit-color-swatch-wrapper {
+    padding: 0;
+    border-radius: 8px;
+}
+
+.custom-color-container input[type="color"]::-webkit-color-swatch {
+    border: none;
+    border-radius: 8px;
+}
+
+.custom-color-container input[type="color"]:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(139, 69, 19, 0.3);
+}
+
+.custom-color-container label {
+    font-weight: 600;
+    color: #2F1B14;
+    font-size: 1rem;
+}
+
+.apply-custom-btn {
+    width: 100%;
+    background: linear-gradient(135deg, #8B4513 0%, #A0522D 100%);
+    color: white;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(139, 69, 19, 0.3);
+}
+
+.apply-custom-btn:hover {
+    background: linear-gradient(135deg, #A0522D 0%, #8B4513 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(139, 69, 19, 0.4);
+}
+
+.apply-custom-btn:active {
+    transform: translateY(0);
+}
+
+/* Mobile responsiveness for color modal */
+@media (max-width: 768px) {
+    .color-modal .modal-content {
+        width: 95%;
+        margin: 1rem;
+    }
+    
+    .color-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.75rem;
+    }
+    
+    .custom-color-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .custom-color-container input[type="color"] {
+        width: 100%;
+        max-width: 150px;
     }
 } 

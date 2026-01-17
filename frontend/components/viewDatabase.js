@@ -1,5 +1,5 @@
 // View Database Component
-import { showLoading, hideLoading, showToast, apiCall, getSentimentIcon } from '../utils.js';
+import { showLoading, hideLoading, showToast, apiCall, getSentimentIcon, getPOSIcon } from '../utils.js';
 
 let currentPage = 0;
 let currentWords = [];
@@ -221,7 +221,6 @@ function displayDatabaseWords(words) {
             <div class="word-header">
                 <span class="word-title">${word.word}</span>
                 <div class="word-header-right">
-                    <span class="word-pos">${word.pos}</span>
                     <div class="word-menu">
                         <button class="menu-btn" onclick="toggleWordMenu(${word.id})">⋯</button>
                         <div class="menu-dropdown" id="menu-${word.id}">
@@ -237,6 +236,7 @@ function displayDatabaseWords(words) {
             <div class="word-badges">
                 <span class="rarity-badge rarity-${word.rarity}">${word.rarity}</span>
                 <span class="sentiment-badge">${getSentimentIcon(word.sentiment)} ${word.sentiment}</span>
+                <span class="word-pos-badge">${getPOSIcon(word.pos)} ${word.pos}</span>
             </div>
         </div>
     `).join('');
