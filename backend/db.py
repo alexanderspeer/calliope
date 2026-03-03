@@ -63,9 +63,9 @@ def ensure_schema_exists():
             # CREATE SCHEMA IF NOT EXISTS is idempotent and safe
             connection.execute(text(f"CREATE SCHEMA IF NOT EXISTS {CALLIOPE_SCHEMA}"))
             connection.commit()
-        print(f"[SCHEMA] ✓ PostgreSQL schema '{CALLIOPE_SCHEMA}' ensured (safe on shared DB)")
+        print(f"[SCHEMA] [OK] PostgreSQL schema '{CALLIOPE_SCHEMA}' ensured (safe on shared DB)")
     except Exception as e:
-        print(f"[SCHEMA] ✗ Error creating schema: {e}")
+        print(f"[SCHEMA] [ERROR] Error creating schema: {e}")
         raise
 
 
@@ -85,9 +85,9 @@ def create_tables():
     Base.metadata.create_all(bind=engine)
     
     if IS_POSTGRESQL:
-        print(f"[TABLES] ✓ Tables created in schema '{CALLIOPE_SCHEMA}' (isolated from public)")
+        print(f"[TABLES] [OK] Tables created in schema '{CALLIOPE_SCHEMA}' (isolated from public)")
     else:
-        print("[TABLES] ✓ Tables created in SQLite")
+        print("[TABLES] [OK] Tables created in SQLite")
 
 
 def init_database():
@@ -479,7 +479,7 @@ def verify_schema_isolation() -> Dict:
             if found_tables == expected_tables and len(public_collision_list) == 0:
                 verification_results["status"] = "ok"
                 verification_results["safe"] = True
-                verification_results["message"] = f"✓ All tables in '{CALLIOPE_SCHEMA}' schema, public schema untouched"
+                verification_results["message"] = f"[OK] All tables in '{CALLIOPE_SCHEMA}' schema, public schema untouched"
             else:
                 verification_results["status"] = "warning"
                 if found_tables != expected_tables:

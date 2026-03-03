@@ -374,12 +374,15 @@ async def get_thesaurus_results(request: ThesaurusRequest, db: Session = Depends
     try:
         word = clean_word(request.word)
         
-        # Get all words from database for vocabulary list
+        # Get all words from database with full data (word, pos, definition) for semantic matching
         all_words = get_all_words(db)
-        vocabulary_list = [w.word for w in all_words]
-        
-        # Find synonyms using OpenAI
-        synonym_words = find_synonyms(word, vocabulary_list)
+        vocabulary_words = [
+            {"word": w.word, "pos": w.pos, "definition": w.definition}
+            for w in all_words
+        ]
+
+        # Find synonyms using OpenAI (uses definitions for richer semantic matching)
+        synonym_words = find_synonyms(word, vocabulary_words)
         
         # Get full word data for synonyms
         synonyms = []

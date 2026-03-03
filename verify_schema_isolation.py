@@ -54,43 +54,43 @@ def print_result(verification: dict):
     
     # Print tables found
     if verification["tables_found"]:
-        print("✓ Tables Found:")
+        print("[OK] Tables Found:")
         for table in verification["tables_found"]:
             print(f"  - {table}")
         print()
     else:
-        print("✗ No tables found!")
+        print("[ERROR] No tables found!")
         print()
     
     # Print public collisions (CRITICAL)
     if verification.get("public_tables_created"):
-        print("✗ DANGER - Tables Found in Public Schema:")
+        print("[DANGER] Tables Found in Public Schema:")
         for table in verification["public_tables_created"]:
             print(f"  - public.{table}")
         print()
-        print("⚠️  WARNING: These tables may collide with other apps on the shared database!")
+        print("[WARNING] These tables may collide with other apps on the shared database!")
         print()
     
     # Print errors
     if verification["errors"]:
-        print("✗ Errors:")
+        print("[ERROR] Errors:")
         for error in verification["errors"]:
             print(f"  - {error}")
         print()
     
     # Print warnings
     if verification["warnings"]:
-        print("⚠️  Warnings:")
+        print("[WARNING] Warnings:")
         for warning in verification["warnings"]:
             print(f"  - {warning}")
         print()
     
     # Print status
     status_icon = {
-        "ok": "✓",
-        "warning": "⚠️",
-        "error": "✗",
-        "unknown": "?"
+        "ok": "[OK]",
+        "warning": "[WARNING]",
+        "error": "[ERROR]",
+        "unknown": "[?]"
     }
     
     print(f"Status: {status_icon.get(verification['status'], '?')} {verification['status'].upper()}")
@@ -103,15 +103,15 @@ def print_result(verification: dict):
     # Print safety verdict
     print("=" * 70)
     if verification["safe"]:
-        print("✓ SAFE: Schema isolation verified - safe to use in production")
+        print("[OK] SAFE: Schema isolation verified - safe to use in production")
         print("=" * 70)
         return 0
     elif verification["status"] == "warning":
-        print("⚠️  WARNING: Review warnings before deploying to production")
+        print("[WARNING] Review warnings before deploying to production")
         print("=" * 70)
         return 2
     else:
-        print("✗ UNSAFE: Schema isolation FAILED - DO NOT use in production!")
+        print("[ERROR] UNSAFE: Schema isolation FAILED - DO NOT use in production!")
         print("=" * 70)
         print()
         print("NEXT STEPS:")
@@ -128,7 +128,7 @@ def main():
     
     # Check environment
     if not os.getenv("DATABASE_URL"):
-        print("✗ ERROR: DATABASE_URL environment variable not set")
+        print("[ERROR] DATABASE_URL environment variable not set")
         print()
         print("Please set DATABASE_URL and try again:")
         print("  export DATABASE_URL='your-database-url'")
@@ -143,7 +143,7 @@ def main():
         return print_result(verification)
     
     except Exception as e:
-        print(f"✗ FATAL ERROR during verification: {e}")
+        print(f"[ERROR] FATAL ERROR during verification: {e}")
         import traceback
         traceback.print_exc()
         return 1

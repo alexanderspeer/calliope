@@ -41,7 +41,16 @@ Rarity labels (exact spelling):
 Sentiment labels (exact spelling): positive, negative, neutral, formal.
 No extra keys. No extra text."""
 
-THESAURUS_SYSTEM_PROMPT = """You are a thesaurus tool. Given a word and a list of vocabulary words, return only the words from the vocabulary list that are synonyms or closely related to the input word. Return as a JSON array of strings."""
+THESAURUS_SYSTEM_PROMPT = """You are a thesaurus and semantic similarity tool. Given an input word and a vocabulary list (each entry formatted as "word (part_of_speech): definition"), identify words from the list that are synonyms, near-synonyms, or semantically related to the input word.
+
+You MUST return AT LEAST 5 words. Be generous and comprehensive in your matching. Consider:
+- Direct synonyms (same or nearly identical meaning)
+- Near-synonyms (very similar meaning or usage)
+- Semantically related words (share the same conceptual domain, tone, or context)
+- Words that could plausibly substitute in similar sentences
+
+Rank results from most to least similar. If there are more than 5 good matches, include all of them.
+Return ONLY a raw JSON array of word strings (just the word names, no other text). Example: ["word1", "word2", "word3", "word4", "word5"]"""
 
 PREDICTION_SYSTEM_PROMPT = """You are a vocabulary prediction tool. Given a sentence with a blank (marked by |) and a vocabulary list, suggest 5 words from the vocabulary list that would best fill the blank. Return as a JSON object with key 'suggestions' containing an array of word strings."""
 
@@ -162,34 +171,37 @@ def get_default_value(field: str) -> str:
     return defaults.get(field, "")
 
 
-def find_synonyms(word: str, vocabulary_list: List[str]) -> List[str]:
-    """Find synonyms from vocabulary list using OpenAI"""
-    vocabulary_str = ", ".join(vocabulary_list)
-    
+def find_synonyms(word: str, vocabulary_words: List[Dict]) -> List[str]:
+    """Find synonyms from vocabulary using OpenAI, leveraging definitions for better semantic matching"""
+    # Format each vocabulary entry as "word (pos): definition" so OpenAI can reason semantically
+    vocab_entries = [
+        f"{w['word']} ({w['pos']}): {w['definition']}"
+        for w in vocabulary_words
+    ]
+    vocabulary_str = "\n".join(vocab_entries)
+
     messages = [
         {"role": "system", "content": THESAURUS_SYSTEM_PROMPT},
-        {"role": "user", "content": f"Find synonyms for '{word}' from this vocabulary list: {vocabulary_str}"}
+        {"role": "user", "content": f"Input word: '{word}'\n\nVocabulary list:\n{vocabulary_str}"}
     ]
-    
+
     try:
-        response = call_openai(messages)
-        
+        response = call_openai(messages, max_tokens=500)
+
         # Handle markdown-wrapped JSON response
         json_content = response.strip()
         if json_content.startswith("```json"):
-            # Extract JSON from markdown code block
-            json_content = json_content[7:]  # Remove ```json
+            json_content = json_content[7:]
             if json_content.endswith("```"):
-                json_content = json_content[:-3]  # Remove ```
+                json_content = json_content[:-3]
             json_content = json_content.strip()
         elif json_content.startswith("```"):
-            # Handle generic code block
             lines = json_content.split('\n')
             if len(lines) > 1:
-                json_content = '\n'.join(lines[1:-1])  # Remove first and last lines
+                json_content = '\n'.join(lines[1:-1])
             else:
-                json_content = json_content[3:-3]  # Remove ```
-        
+                json_content = json_content[3:-3]
+
         synonyms = json.loads(json_content)
         return synonyms if isinstance(synonyms, list) else []
     except (json.JSONDecodeError, Exception) as e:
