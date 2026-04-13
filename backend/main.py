@@ -6,7 +6,13 @@ from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 from typing import List, Dict, Optional
 import json
+import sys
 from pathlib import Path
+
+# Running `python main.py` from backend/ leaves the repo root off sys.path; `backend.*` imports need it.
+_root = Path(__file__).resolve().parent.parent
+if str(_root) not in sys.path:
+    sys.path.insert(0, str(_root))
 
 # Local imports
 from backend.db import get_db, init_database, get_word_by_name, add_word, get_words_by_filter, get_words_for_flashcards
@@ -40,8 +46,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Mount static files
-app.mount("/static", StaticFiles(directory="frontend"), name="static")
+# Mount static files (path relative to repo root so `python main.py` from backend/ works)
+app.mount("/static", StaticFiles(directory=str(_root / "frontend")), name="static")
 
 # Initialize database on startup
 @app.on_event("startup")
@@ -686,4 +692,7 @@ async def spell_check_word(request: SpellCheckRequest):
 
 if __name__ == "__main__":
     import uvicorn
+
+    # 0.0.0.0 is only for binding; browsers must use localhost or 127.0.0.1
+    print("Open: http://127.0.0.1:8000/  (not http://0.0.0.0:8000/)")
     uvicorn.run(app, host="0.0.0.0", port=8000) 
