@@ -94,6 +94,7 @@ function closePage() {
 function setupGlobalNavigation() {
     window.openPage = openPage;
     window.closePage = closePage;
+    window.downloadDatabaseCsv = downloadDatabaseCsv;
     window.openHelpModal = openHelpModal;
     window.closeHelpModal = closeHelpModal;
     window.openColorModal = openColorModal;
@@ -407,6 +408,35 @@ function displayStats(stats) {
             </div>
         </div>
     `;
+}
+
+async function downloadDatabaseCsv() {
+    try {
+        showLoading();
+
+        const response = await fetch('/api/export/csv');
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(errorText || `HTTP ${response.status}`);
+        }
+
+        const blob = await response.blob();
+        const downloadUrl = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = downloadUrl;
+        link.download = `calliope_words_export_${new Date().toISOString().slice(0, 10)}.csv`;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        window.URL.revokeObjectURL(downloadUrl);
+
+        showToast('CSV download started.', 'success');
+    } catch (error) {
+        console.error('CSV export failed:', error);
+        showToast('Could not download CSV export. Please try again.', 'error');
+    } finally {
+        hideLoading();
+    }
 }
 
 // Load Parts of Speech for filters

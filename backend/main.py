@@ -1,11 +1,13 @@
 from fastapi import FastAPI, Depends, HTTPException, status, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, StreamingResponse
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 from typing import List, Dict, Optional
 import json
+import csv
+import io
 import sys
 from pathlib import Path
 
@@ -649,6 +651,54 @@ async def search_words(q: str, limit: int = 10, db: Session = Depends(get_db)):
         )
 
 
+@app.get("/api/export/csv")
+async def export_words_csv(db: Session = Depends(get_db)):
+    """Export all words and metadata as a CSV file."""
+    try:
+        words = db.query(Word).order_by(Word.date_added.desc(), Word.id.desc()).all()
+
+        buffer = io.StringIO()
+        writer = csv.writer(buffer)
+        writer.writerow([
+            "id",
+            "word",
+            "pos",
+            "definition",
+            "example_sentence",
+            "rarity",
+            "sentiment",
+            "date_added",
+        ])
+
+        for word in words:
+            writer.writerow([
+                word.id,
+                word.word,
+                word.pos,
+                word.definition,
+                word.example_sentence,
+                word.rarity,
+                word.sentiment,
+                word.date_added.isoformat() if word.date_added else "",
+            ])
+
+        filename = "calliope_words_export.csv"
+        csv_content = buffer.getvalue()
+        buffer.close()
+
+        return StreamingResponse(
+            iter([csv_content]),
+            media_type="text/csv",
+            headers={"Content-Disposition": f'attachment; filename="{filename}"'},
+        )
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Error exporting words as CSV: {str(e)}"
+        )
+
+
 # Spell checking endpoint
 @app.post("/api/spell-check", response_model=SpellCheckResponse)
 async def spell_check_word(request: SpellCheckRequest):
@@ -694,5 +744,5 @@ if __name__ == "__main__":
     import uvicorn
 
     # 0.0.0.0 is only for binding; browsers must use localhost or 127.0.0.1
-    print("Open: http://127.0.0.1:8000/  (not http://0.0.0.0:8000/)")
+    print("Open: http://localhost:8000/  (not http://0.0.0.0:8000/)")
     uvicorn.run(app, host="0.0.0.0", port=8000) 

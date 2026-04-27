@@ -354,6 +354,11 @@ body {
     line-height: 1.5;
 }
 
+.nav-card-export .nav-icon {
+    background: rgba(255, 255, 255, 0.9);
+    border-style: dashed;
+}
+
 /* ===== PAGE OVERLAY ===== */
 .page-overlay {
     position: fixed;

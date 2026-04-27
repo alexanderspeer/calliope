@@ -31,7 +31,9 @@ heroku config:get DATABASE_URL --app your-app-name
 # Locally (for testing)
 export DATABASE_URL='postgres://user:pass@host:port/database'
 ```
-
+postgres://u6v29drppo6nm9:p976d26dd41e0677f94be2b3a3f51e5ab6c0e8eec3b74626b3fbc444a477919c5@c683rl2u9g20vq.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com:5432/d4cpj3hcf8ednu
+export DATABASE_URL='postgres://u6v29drppo6nm9:p976d26dd41e0677f94be2b3a3f51e5ab6c0e8eec3b74626b3fbc444a477919c5@c683rl2u9g20vq.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com:5432/d4cpj3hcf8ednu'
+$env:DATABASE_URL='postgres://u6v29drppo6nm9:p976d26dd41e0677f94be2b3a3f51e5ab6c0e8eec3b74626b3fbc444a477919c5@c683rl2u9g20vq.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com:5432/d4cpj3hcf8ednu'
 ### 2. Deploy the Application
 
 ```bash
