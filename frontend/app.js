@@ -72,6 +72,9 @@ function openPage(pageName) {
         case 'analyzer':
             loadAnalyzerPage();
             break;
+        case 'humanizer':
+            loadHumanizerPage();
+            break;
         case 'stats':
             loadStatsPage();
             break;
@@ -323,6 +326,52 @@ async function loadAnalyzerPage() {
     `;
     
     setupParagraphAnalyzerEventListeners();
+}
+
+async function loadHumanizerPage() {
+    const content = document.getElementById('page-content');
+    const pageContainer = document.querySelector('.page-container');
+    pageContainer.classList.add('analyzer-container');
+
+    content.innerHTML = `
+        <h1>Humanizer</h1>
+        <p class="humanize-intro">Paste your paragraph below. It will be rewritten following the Humanizer transformation rules.</p>
+        <textarea id="humanize-input" rows="12" placeholder="Paste your paragraph(s) here..."></textarea>
+        <button type="button" id="humanize-btn">Humanize</button>
+        <div id="humanize-result-wrap" class="humanize-result-wrap hidden">
+            <h2>Result</h2>
+            <div id="humanize-result" class="humanize-result-panel"></div>
+        </div>
+    `;
+
+    const btn = document.getElementById('humanize-btn');
+    const input = document.getElementById('humanize-input');
+    const wrap = document.getElementById('humanize-result-wrap');
+    const resultEl = document.getElementById('humanize-result');
+
+    btn.addEventListener('click', async () => {
+        const text = (input.value || '').trim();
+        if (!text) {
+            showToast('Please enter some text first.', 'error');
+            return;
+        }
+        try {
+            showLoading();
+            btn.disabled = true;
+            const data = await apiCall('/humanize', {
+                method: 'POST',
+                body: JSON.stringify({ text }),
+            });
+            resultEl.textContent = data.humanized_text || '';
+            wrap.classList.remove('hidden');
+            showToast('Humanized text ready.', 'success');
+        } catch (e) {
+            wrap.classList.add('hidden');
+        } finally {
+            hideLoading();
+            btn.disabled = false;
+        }
+    });
 }
 
 async function loadStatsPage() {

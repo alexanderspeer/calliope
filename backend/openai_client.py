@@ -519,6 +519,250 @@ def enhance_suggestion_count(enhancements: List[Dict], vocabulary_list: List[str
     return enhanced_enhancements
 
 
+# Humanizer: instructions must remain verbatim (do not edit).
+HUMANIZER_PROMPT = r"""Below is the **regenerated compact prompt** with **stronger emphasis on intentional redundancy**, adjusted to reflect your editing pattern more accurately. In your PCA rewrite, redundancy was not incidental. It was structural. The prompt now treats redundancy as a primary transformation mechanism rather than a secondary stylistic adjustment.
+
+Nothing else has been removed.
+
+---
+
+# Prompt: Convert AI-Generated Paragraphs Into Human-Voice Writing (Redundancy-Weighted Version)
+
+Rewrite the paragraph(s) below so they read like they were written by a real person thinking through the material rather than presenting a neutral optimized summary.
+
+Do **not shorten** the paragraph(s). Prefer **adding interpretation, continuity, and redundancy** instead of removing content. Preserve **all factual meaning exactly**.
+
+Apply the following transformations:
+
+---
+
+## 1. Add perspective anchoring throughout
+
+Convert observer-neutral claims into situated interpretation where appropriate.
+
+Examples:
+
+results show → we believe the results show
+this suggests → this seems to suggest
+this demonstrates → this appears to show
+
+Allowed anchors:
+
+I think
+I noticed
+we found
+we believe
+it seems
+to me
+in practice
+from this
+
+Use consistently across paragraphs.
+
+---
+
+## 2. Replace categorical certainty with interpreted certainty
+
+Examples:
+
+is → seems to be
+shows → appears to show
+demonstrates → likely indicates
+proves → supports the idea that
+
+Optional softeners:
+
+maybe
+likely
+perhaps
+possible
+suggests
+
+Maintain correctness while reducing absolute tone.
+
+---
+
+## 3. Expand compressed phrasing systematically
+
+AI writing compresses too efficiently. Expand instead.
+
+Examples:
+
+reduces noise → helps reduce some of the noise in the signal
+improves performance → improves overall performance in practice
+supports learning → helps support the learning process
+artifact removal → signal compression and the resulting artifact removal
+
+Prefer expansion whenever possible.
+
+---
+
+## 4. Insert reasoning-pathway connectors frequently
+
+Humans narrate how conclusions emerge.
+
+Introduce naturally:
+
+because
+due to the fact that
+when looking at this
+for example
+in particular
+as a result
+this means that
+which helps explain why
+
+Use these across paragraphs, not just once.
+
+---
+
+## 5. Strengthen sentence-to-sentence continuity
+
+Replace isolated claims with connected discourse.
+
+Examples:
+
+One application is
+→ One important application that comes from this is
+
+This suggests
+→ Because of this, it seems reasonable to think
+
+Maintain forward movement across sentences.
+
+---
+
+## 6. Convert report-style claims into observation-style claims
+
+Examples:
+
+the pattern shows → we noticed the pattern shows
+the results indicate → the results seem to indicate
+this feature improves → this feature appears to improve
+
+Observation framing increases authenticity.
+
+---
+
+## 7. Add deliberate natural redundancy (PRIMARY TRANSFORMATION RULE)
+
+Actively introduce mild repetition and expanded referential phrasing across the paragraph(s).
+
+Do NOT optimize wording for brevity.
+
+Prefer structures like:
+
+these results
+these findings
+this situation
+this process overall
+this kind of pattern
+the EEG signals
+the condition subspaces
+the feature space itself
+the system as a whole
+
+Convert compressed phrasing into layered phrasing:
+
+dimensionality
+→ the dimensionality of the feature space
+
+artifact removal
+→ signal compression and the resulting artifact removal
+
+frequency bands
+→ these particular frequency bands
+
+subspace comparisons
+→ these subspace comparisons themselves
+
+Add redundancy especially when:
+
+introducing conclusions
+referencing prior sentences
+connecting implications
+describing technical structures
+restating interpretive meaning
+
+Redundancy should improve continuity and pacing rather than reduce clarity.
+
+---
+
+## 8. Increase burstiness slightly
+
+Improve rhythm by:
+
+mixing short and long sentences
+adding qualifier phrases
+expanding noun phrases
+
+Avoid uniform sentence length across the paragraph(s).
+
+---
+
+## 9. Replace abstract claims with grounded phrasing where possible
+
+Examples:
+
+improves communication
+→ made communication easier in practice
+
+increases efficiency
+→ helped make the workflow more efficient overall
+
+supports interpretation
+→ helps support how these results are interpreted in practice
+
+---
+
+## 10. Replace formal transitions with natural reasoning transitions
+
+Avoid:
+
+additionally
+furthermore
+moreover
+
+Prefer:
+
+another thing is
+what stands out is
+because of this
+over time
+one reason for this is
+
+---
+
+## 11. Expand conclusions into stance-based interpretations
+
+Examples:
+
+Overall, this shows that
+→ Overall, we believe this shows that
+
+End with interpretation rather than summary-only restatement.
+
+---
+
+## 12. Prefer addition over deletion at all times
+
+If uncertain whether to modify something:
+
+expand it slightly rather than simplifying it.
+
+Goal:
+
+optimized summary voice
+→ reflective human reasoning voice with continuity and redundancy"""
+
+
+def humanize_paragraph(text: str) -> str:
+    """Apply the Humanizer prompt to user text; returns rewritten prose only."""
+    combined = f"{HUMANIZER_PROMPT}\n\n---\n\n{text}"
+    messages = [{"role": "user", "content": combined}]
+    return call_openai(messages, max_tokens=8192, temperature=0.5)
+
+
 def test_openai_connection() -> bool:
     """Test OpenAI API connection"""
     try:

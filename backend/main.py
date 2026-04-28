@@ -25,11 +25,12 @@ from backend.models import Word
 from backend.schemas import (
     AddWordRequest, AddWordResponse, WordResponse, ThesaurusRequest, ThesaurusResponse,
     PredictionRequest, PredictionResponse, ParagraphAnalysisRequest, ParagraphAnalysisResponse,
+    HumanizeRequest, HumanizeResponse,
     FlashcardFilter, DatabaseFilter, WordOfTheDayResponse, WordCreate, WordSuggestion,
     SpellCheckRequest, SpellCheckResponse, SpellSuggestion, UpdateWordRequest, PaginatedDatabaseResponse,
     WordEnhancement
 )
-from backend.openai_client import get_word_definition, find_synonyms, predict_words, analyze_paragraph
+from backend.openai_client import get_word_definition, find_synonyms, predict_words, analyze_paragraph, humanize_paragraph
 from backend.utils import clean_word, validate_word_input, sanitize_text_input, insert_delimiter_in_sentence, get_spell_suggestions
 
 # Initialize FastAPI app
@@ -548,6 +549,28 @@ async def analyze_paragraph_endpoint(request: ParagraphAnalysisRequest, db: Sess
             detail=f"Error analyzing paragraph: {str(e)}"
         )
 
+
+@app.post("/api/humanize", response_model=HumanizeResponse)
+async def humanize_endpoint(request: HumanizeRequest):
+    """Rewrite paragraph(s) using the Humanizer prompt (human-voice, redundancy-weighted)."""
+    try:
+        text = request.text.strip()
+        if not text:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Text is required",
+            )
+        humanized = humanize_paragraph(text)
+        return HumanizeResponse(original_text=text, humanized_text=humanized)
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Error humanizing text: {str(e)}",
+        )
+
+
 # Flashcards endpoint
 @app.get("/api/flashcards", response_model=List[WordResponse])
 async def get_flashcards(
@@ -745,4 +768,11 @@ if __name__ == "__main__":
 
     # 0.0.0.0 is only for binding; browsers must use localhost or 127.0.0.1
     print("Open: http://localhost:8000/  (not http://0.0.0.0:8000/)")
-    uvicorn.run(app, host="0.0.0.0", port=8000) 
+    # Import-string + reload so new routes (e.g. /api/humanize) load without a manual restart
+    uvicorn.run(
+        "backend.main:app",
+        host="0.0.0.0",
+        port=8000,
+        reload=True,
+        reload_delay=0.25,
+    ) 

@@ -359,6 +359,44 @@ body {
     border-style: dashed;
 }
 
+.humanize-intro {
+    color: #5D4037;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+}
+
+#humanize-input {
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 1rem;
+    font-family: inherit;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.humanize-result-wrap.hidden {
+    display: none;
+}
+
+.humanize-result-wrap h2 {
+    margin-top: 0.5rem;
+    margin-bottom: 0.75rem;
+    font-size: 1.25rem;
+    color: #2F1B14;
+}
+
+.humanize-result-panel {
+    margin-top: 0.25rem;
+    padding: 1.25rem;
+    border-radius: 12px;
+    border: 2px solid #8B4513;
+    background: rgba(255, 255, 255, 0.88);
+    white-space: pre-wrap;
+    line-height: 1.65;
+    max-height: min(50vh, 28rem);
+    overflow-y: auto;
+}
+
 /* ===== PAGE OVERLAY ===== */
 .page-overlay {
     position: fixed;

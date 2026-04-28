@@ -96,6 +96,15 @@ class ParagraphAnalysisResponse(BaseModel):
     enhancements: List[WordEnhancement]
 
 
+class HumanizeRequest(BaseModel):
+    text: str = Field(..., min_length=1, max_length=80000)
+
+
+class HumanizeResponse(BaseModel):
+    original_text: str
+    humanized_text: str
+
+
 class FlashcardFilter(BaseModel):
     pos: Optional[str] = None
     rarity: Optional[RarityEnum] = None
