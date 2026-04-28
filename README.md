@@ -1,3 +1,9 @@
+# **TO ME**
+
+You run the app by navigating to the backend dir and running 'python main.py'
+
+
+
 # Calliope - Advanced Vocabulary Enhancement App
 
 A sophisticated vocabulary learning and enhancement application powered by OpenAI's GPT models. Calliope helps users build advanced vocabulary through AI-generated definitions, interactive flashcards, synonym discovery, and intelligent text analysis.
